@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.inout.pro.ChangeMode;
+import org.inout.pro.Controller;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ import android.widget.Button;
 
 public class MainActivity extends Activity {
 
-	private ChangeMode	cm;
+	private Controller	controller;
 	private Button button_change_mode;
 	private Button button_change_day_night;
 	@Override
@@ -38,8 +39,11 @@ public class MainActivity extends Activity {
 			strArray[3] = file1.getAbsolutePath();
 		}
 		Log.e("mceditor", "xx="+strArray[3].toString());
-		cm = new ChangeMode(strArray[3]);
-		cm.init();
+//		cm = new ChangeMode(strArray[3]);
+//		cm.init();
+		controller = Controller.getInstance();
+		controller.setPath(strArray[3]);
+		controller.loadData();
 		
 		button_change_mode = (Button)findViewById(R.id.button1);
 		button_change_mode.setOnClickListener(new OnClickListener() {
@@ -47,7 +51,8 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				try {
-					cm.changeCurMode();
+					
+					controller.changeCurMode();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -62,7 +67,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				try {
-					cm.changeDayOrNight();
+					controller.changeDayOrNight();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
