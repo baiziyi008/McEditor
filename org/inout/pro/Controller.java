@@ -22,11 +22,9 @@ public class Controller {
 	private String flagStr = null;
 	private final String NAME = "level.dat";
 	private final String TMPNAME = "tmp_level.dat";
-	private final String targetStr = "GameType";
 	private String path = null;
 	private int size = 0;	//文件字节数
 	private int cursor = 0;	//文件位置偏移
-	private int value = 0;		//当前设置的值
 	
 	private int gameType;
 	private long time;
@@ -60,20 +58,23 @@ public class Controller {
 	}
 	//获取当前的模式   0:生存  1：创造
 	public int getCurMode(){
-		return this.value;
-	}
-	//更改当前模式
-	public void changeCurMode() throws IOException{
-		this.flagStr = "GameType";
-		writeTag(this.flagStr);
+		return this.gameType;
 	}
 	
 	private void setCurTime(Long value){
 		this.time = value;
 	}
 	//获取当前时间 1:白天   0：黑夜
-	public int getCurTime(){
-		return (this.time>=0 && this.time<12537) ? 1 : 0;
+	public long getCurTime(){
+		//return (this.time>=0 && this.time<12537) ? 1 : 0;
+		return this.time;
+	}
+
+	//////////////////////////////////////////////////////
+	//更改当前模式
+	public void changeCurMode() throws IOException{
+		this.flagStr = "GameType";
+		writeTag(this.flagStr);
 	}
 	
 	//切换白天黑夜
@@ -281,11 +282,11 @@ public class Controller {
 			setCurMode(newValue);
 			break;
 		case "DayCycleStopTime":
-			newValue = this.value == -1 ? 5000 : -1;
+			//newValue = this.value == -1 ? 5000 : -1;
 			break;
 		case "Time":
 			//this.value = (int)this.curItem[1];
-			int curTime = this.getCurTime();
+			long curTime = this.getCurTime();
 			Long newValue1 = (curTime>=0 && curTime<12537) ? 12537L : 0L;
 			Long jl = Long.reverseBytes(newValue1);
 			try {
